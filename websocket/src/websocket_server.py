@@ -18,7 +18,18 @@ class LedBarServerProtocol(WebSocketServerProtocol):
         logger.info("WebSocket started listening!")
 
     def onMessage(self, payload, isBinary):
-        pass
+        try:
+            # We would expect the payload to be binary
+            animation_obj = json.loads(payload.decode('utf-8'))
+            # We then try to import the specified module
+            mod = importlib.import_module(animation_obj.get("animation_module", default="animations"))
+            # Now, instatiate the class with the kwargs
+            cls = getattr(mod, animation_obj.get("animation_class")
+            instance = cls(**animation_obj["animation_parameters"])
+            # And push it up the queue
+            self.command_queue.put_nowait(instance)
+       except:
+            logger.exception("An error occurred during parsing of the message on the websocket, no animation was processed")
 
     def onClose(self, wasClean, code, reason):
         logger.info("Websocket connection closed [%s]: %s", code, reason)

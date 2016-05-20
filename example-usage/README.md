@@ -6,13 +6,17 @@ these objects is relatively straightforward, two keys are required:
 `animation_class` references a Python object that implements the `Animation` 
 specification. The easiest example is a `KeyframeAnimation`.
 
+`animation_module` (possibly) references the module of which the class 
+shall be  imported
+
 `animation_parameters` is a dict of named parameters for the python class, it 
-is advisable that the python code defaults parameters.
+is advisable that the python code defaults parameters. The dict will be 
+passed to the python class as `**kwargs`
 
 # Keyframe example
 ```
 {
-    "animation_class":  "animations.KeyframeAnimation":
+    "animation_class":  "KeyframeAnimation",
     "animation_parameters": {
         "frames":
             [[
