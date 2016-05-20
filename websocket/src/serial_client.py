@@ -12,12 +12,14 @@ class SerialClient(object):
         self.connection = serial_for_url(self.uri)
         self.connection.baudrate = self.baudrate
 
+    def run(self):
+        print("verkeerde func")
+
     def run_forever(self):
-        # start with searching for a new animation in the queue
-            
+        print("running forever!")
         while True:
             if not (self.command_queue.empty() and self.current_animation):
-                self.current_animation = self.command_queue.get()
+                self.current_animation = yield self.command_queue
                 self.current_animation.pre_animation()
                 
             keyframe = self.current_animation.animate()
@@ -31,7 +33,7 @@ class SerialClient(object):
                 serial.write(pixel.g)
                 serial.write(pixel.b)
                 
-           serial.flush()
+            serial.flush()
            
     def stop(self):
         pass

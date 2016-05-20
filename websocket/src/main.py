@@ -5,6 +5,7 @@ import time
 from serial_client import SerialClient
 from websocket_server import *
 
+
 def main():
     # The queue that holds animation directives from the websocket thread to
     # the serial communication thread
