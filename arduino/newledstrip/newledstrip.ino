@@ -14,16 +14,16 @@
 // Moet 2**n - 1 zijn
 #define INTERVAL 255
 
-#define CORRECTEDINTERVAL (PI * 2 / INTERVAL)
+#define CORRECTEDINTERVAL (PI * 2 / (INTERVAL+1))
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 uint8_t pixels[NUMBYTES];
-uint8_t sine[INTERVAL*3];
+uint8_t sine[(INTERVAL + 1)*3];
 boolean local_animate = false;
 uint8_t counter = 0;
 
 void setup() {
-  for (int i = 0; i < NUMPIXELS; ++i) {
+  for (int i = 0; i < INTERVAL + 1; ++i) {
     sine[i*3]   = IA_RED   - OFFSET_RED   * cos(i * CORRECTEDINTERVAL);
     sine[i*3+1] = IA_GREEN - OFFSET_GREEN * cos(i * CORRECTEDINTERVAL);
     sine[i*3+2] = IA_BLUE  - OFFSET_BLUE  * cos(i * CORRECTEDINTERVAL);
