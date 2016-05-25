@@ -5,14 +5,14 @@
 
 #define IA_RED 29
 #define IA_GREEN 66
-#define IA_BLUE 138
+//#define IA_BLUE 138
 
-#define OFFSET_BLUE   40
+#define OFFSET_BLUE   110
 #define OFFSET_RED    (OFFSET_BLUE * IA_RED   / IA_BLUE)
 #define OFFSET_GREEN  (OFFSET_BLUE * IA_GREEN / IA_BLUE)
 
 // Moet 2**n - 1 zijn
-#define INTERVAL 255
+#define INTERVAL 127
 
 #define CORRECTEDINTERVAL (PI * 2 / (INTERVAL+1))
 
@@ -42,11 +42,11 @@ void loop() {
       strip.setPixelColor(i, strip.Color(pixels[i*3], pixels[i*3+1], pixels[i*3+2]));
     }
   } else if (local_animate) {
-    counter = (counter + 1) & INTERVAL;
     for (int i = 0; i < NUMPIXELS; ++i) {
       int j = ((i+counter) & INTERVAL) * 3;
       strip.setPixelColor(i, strip.Color(sine[j], sine[j+1], sine[j+2]));
     }
+    counter = (counter + 1) & INTERVAL;
   } else {
     local_animate = true;
     for (int i = 0; i < NUMPIXELS; ++i) {
