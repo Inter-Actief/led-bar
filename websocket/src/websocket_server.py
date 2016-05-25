@@ -3,9 +3,9 @@ from autobahn.asyncio.websocket import WebSocketServerProtocol, \
 
 import logging
 import asyncio
+import threading
 
 logger = logging.getLogger(__name__)
-
 
 class LedBarServerProtocol(WebSocketServerProtocol):
     def __init__(self, queue):
@@ -40,6 +40,13 @@ class LedBarServerProtocol(WebSocketServerProtocol):
     def onClose(self, wasClean, code, reason):
         logger.info("Websocket connection closed [%s]: %s", code, reason)
 
+class EventLoopExecutor(threading.Thread):
+    def __init__(self, loop):
+        super(EventLoopExecutor, self).__init__()
+        self.loop = loop
+
+    def run(self):
+        self.loop.run_forever()
 
 def create_ledbar_server(queue):
     factory = WebSocketServerFactory("ws://127.0.0.1:9000")
@@ -50,6 +57,4 @@ def create_ledbar_server(queue):
 
     server = loop.run_until_complete(coro)
 
-    print("hai")
-
-    return loop
+    return EventLoopExecutor(loop)

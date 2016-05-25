@@ -17,16 +17,8 @@ def main():
     # Initialise the websocket server
     ledbar_server = create_ledbar_server(command_queue)
 
-    # Run the websocket server in a seperate thread
-    ledbar_server_thread = threading.Thread(target=ledbar_server.run_forever)
-    ledbar_server_thread.setDaemon(True)
-
-    # Run the serial client in a seperate thread
-    serial_client_thread = threading.Thread(target=serial_client.run_forever)
-    serial_client_thread.setDaemon(True)
-
-    ledbar_server_thread.start()
-    serial_client_thread.start()
+    ledbar_server.start()
+    serial_client.start()
 
     try:
         while threading.active_count() > 0:
